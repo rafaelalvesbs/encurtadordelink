@@ -177,7 +177,6 @@
             const longUrl = longUrlInput.value.trim();
             const alias = customAliasInput.value.trim();
 
-            // Reseta a interface
             statusMessage.className = 'message';
             statusMessage.textContent = '';
             resultBox.style.display = 'none';
@@ -196,8 +195,11 @@
                 apiUrl += `&shorturl=${encodeURIComponent(alias)}`;
             }
 
+            // URL do Proxy (AllOrigins no modo raw)
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
+
             try {
-                const response = await fetch(apiUrl);
+                const response = await fetch(proxyUrl);
                 const data = await response.json();
 
                 if (data.errorcode) {
@@ -209,6 +211,7 @@
                     showMessage('Link gerado com sucesso!', 'success');
                 }
             } catch (error) {
+                console.error(error);
                 showMessage('Ocorreu um erro ao conectar com o serviço. Tente novamente.', 'error');
             } finally {
                 shortenBtn.textContent = 'Encurtar URL';
