@@ -6,17 +6,17 @@
     <title>Encurtador de Links</title>
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --bg: #f8fafc;
+            --primary: #10b981;
+            --primary-hover: #059669;
+            --bg-gradient: linear-gradient(135deg, #a7f3d0 0%, #10b981 100%);
             --surface: #ffffff;
             --text: #334155;
-            --border: #e2e8f0;
+            --border: #d1d5db;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--bg);
+            background: var(--bg-gradient);
             color: var(--text);
             display: flex;
             justify-content: center;
@@ -29,9 +29,9 @@
 
         .container {
             background-color: var(--surface);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             width: 100%;
             max-width: 450px;
         }
@@ -39,8 +39,9 @@
         h1 {
             text-align: center;
             margin-top: 0;
-            margin-bottom: 1.5rem;
-            color: #0f172a;
+            margin-bottom: 1.75rem;
+            color: #047857;
+            font-size: 1.8rem;
         }
 
         .form-group {
@@ -50,67 +51,80 @@
         label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.95rem;
+            color: #475569;
         }
 
         input {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            padding: 0.85rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
             box-sizing: border-box;
             font-size: 1rem;
-            transition: border-color 0.2s;
+            transition: all 0.3s ease;
         }
 
         input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
         }
 
         button {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.85rem;
             background-color: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 600;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 0.5rem;
         }
 
         button:hover {
             background-color: var(--primary-hover);
         }
 
+        button:active {
+            transform: scale(0.98);
+        }
+
         .result-box {
             margin-top: 1.5rem;
-            padding: 1.25rem;
-            background-color: #f1f5f9;
-            border-radius: 8px;
-            border: 1px dashed #cbd5e1;
+            padding: 1.5rem;
+            background-color: #ecfdf5;
+            border-radius: 10px;
+            border: 2px dashed #6ee7b7;
             display: none;
             text-align: center;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .result-box p {
             margin: 0 0 0.75rem 0;
-            font-size: 0.9rem;
-            color: #64748b;
+            font-size: 0.95rem;
+            color: #059669;
+            font-weight: 500;
         }
 
         .short-url {
             display: block;
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             font-weight: bold;
-            color: var(--primary);
+            color: #047857;
             text-decoration: none;
             word-break: break-all;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .short-url:hover {
@@ -118,24 +132,27 @@
         }
 
         #copyBtn {
-            background-color: #475569;
+            background-color: #059669;
             width: auto;
-            padding: 0.5rem 1.5rem;
+            padding: 0.6rem 2rem;
+            font-size: 0.95rem;
+            margin-top: 0;
         }
 
         #copyBtn:hover {
-            background-color: #334155;
+            background-color: #047857;
         }
 
         .message {
-            margin-top: 1rem;
+            margin-top: 1.25rem;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             min-height: 20px;
+            font-weight: 500;
         }
 
         .error { color: #ef4444; }
-        .success { color: #10b981; }
+        .success { color: #059669; }
     </style>
 </head>
 <body>
@@ -195,7 +212,7 @@
                 apiUrl += `&shorturl=${encodeURIComponent(alias)}`;
             }
 
-            // URL do Proxy (AllOrigins no modo raw)
+            // URL do Proxy (AllOrigins) para evitar bloqueio de CORS
             const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(apiUrl)}`;
 
             try {
